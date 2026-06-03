@@ -1,8 +1,8 @@
 {
-  "version": 3,
+  "version": 2,
   "build": {
     "env": {
-      "ASSET_TS": "2026-06-03-1120"
+      "ASSET_TS": "2026-06-03-1125"
     }
   }
 }
