@@ -1,0 +1,38 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg", "x": 60, "y": 40, "width": 680, "height": 520, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg", "x": 350, "y": 54, "width": 420, "height": 24, "text": "BAITPFV Navigation + Screens Map", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg", "originalText": "BAITPFV Navigation + Screens Map", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "s_summary", "x": 130, "y": 100, "width": 180, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#c3fae8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_s1", "type": "text" }, { "id": "t_s1b", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_s1", "x": 220, "y": 112, "width": 120, "height": 22, "text": "Summary", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "s_summary", "originalText": "Summary", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_s1b", "x": 140, "y": 140, "width": 140, "height": 36, "text": "Monthly summaries, enterprise charts", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "s_summary", "originalText": "Monthly summaries, enterprise charts", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "s_reports", "x": 380, "y": 100, "width": 180, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#ffd8a8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_s2", "type": "text" }, { "id": "t_s2b", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_s2", "x": 470, "y": 112, "width": 120, "height": 22, "text": "Reports", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "s_reports", "originalText": "Reports", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_s2b", "x": 390, "y": 140, "width": 140, "height": 36, "text": "Enterprise payment, tax, liability", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "s_reports", "originalText": "Enterprise payment, tax, liability", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "s_enterprise", "x": 130, "y": 240, "width": 220, "height": 100, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_s3", "type": "text" }, { "id": "t_s3b", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_s3", "x": 220, "y": 252, "width": 140, "height": 22, "text": "Enterprise List", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "s_enterprise", "originalText": "Enterprise List", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_s3b", "x": 142, "y": 282, "width": 180, "height": 40, "text": "Filters: branch, date, status; table + pagination", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "s_enterprise", "originalText": "Filters: branch, date, status; table + pagination", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "s_detail", "x": 440, "y": 240, "width": 240, "height": 100, "strokeColor": "#1e1e1e", "backgroundColor": "#d0bfff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_s4", "type": "text" }, { "id": "t_s4b", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_s4", "x": 525, "y": 252, "width": 160, "height": 22, "text": "Enterprise Detail", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "s_detail", "originalText": "Enterprise Detail", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_s4b", "x": 452, "y": 282, "width": 200, "height": 40, "text": "Profile, declarations, invoices, status, Excel export", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "s_detail", "originalText": "Profile, declarations, invoices, status, Excel export", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "s_inventory", "x": 160, "y": 390, "width": 260, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_s5", "type": "text" }, { "id": "t_s5b", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_s5", "x": 255, "y": 402, "width": 140, "height": 22, "text": "Government Inventory", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "s_inventory", "originalText": "Government Inventory", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_s5b", "x": 172, "y": 430, "width": 220, "height": 34, "text": "Stock usages, allocation %, totals by tax office", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "s_inventory", "originalText": "Stock usages, allocation %, totals by tax office", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 220, "y": 190, "width": 0, "height": 50, "points": [[0, 0], [0, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "s_summary", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "s_enterprise", "fixedPoint": [0.5, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a2", "x": 470, "y": 190, "width": 0, "height": 50, "points": [[0, 0], [0, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "s_reports", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "s_detail", "fixedPoint": [0.5, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a3", "x": 240, "y": 340, "width": 120, "height": 50, "points": [[0, 0], [120, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "s_enterprise", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "s_inventory", "fixedPoint": [0, 0] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

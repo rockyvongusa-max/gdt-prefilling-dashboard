@@ -1,0 +1,24 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg1", "x": 80, "y": 60, "width": 640, "height": 260, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg1", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg1", "x": 450, "y": 72, "width": 240, "height": 24, "text": "BAITPFV0.0.1 Architecture", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg1", "originalText": "BAITPFV0.0.1 Architecture", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "fe", "x": 120, "y": 110, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_fe", "type": "text" }, { "id": "t_fe2", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_fe", "x": 230, "y": 122, "width": 120, "height": 22, "text": "Frontend", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "fe", "originalText": "Frontend", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_fe2", "x": 130, "y": 150, "width": 180, "height": 60, "text": "Angular TS\nNgRx\nAngular Material + Bootstrap\nExcel / Charts\nKhmer + Thai i18n", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "fe", "originalText": "Angular TS\nNgRx\nAngular Material + Bootstrap\nExcel / Charts\nKhmer + Thai i18n", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "be", "x": 460, "y": 110, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_be", "type": "text" }, { "id": "t_be2", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_be", "x": 570, "y": 122, "width": 120, "height": 22, "text": "Backend", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "be", "originalText": "Backend", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_be2", "x": 470, "y": 150, "width": 180, "height": 60, "text": "Spring Boot\nMaven module\nTax domain services\nShared gdt-boot-parent:2.0.0", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "be", "originalText": "Spring Boot\nMaven module\nTax domain services\nShared gdt-boot-parent:2.0.0", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 345, "y": 156, "width": 110, "height": 0, "points": [[0, 0], [110, 0]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "fe", "fixedPoint": [1, 0.5] }, "endBinding": { "elementId": "be", "fixedPoint": [0, 0.5] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

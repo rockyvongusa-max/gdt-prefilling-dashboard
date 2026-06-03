@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg", "x": 70, "y": 50, "width": 660, "height": 520, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg", "x": 360, "y": 64, "width": 420, "height": 24, "text": "BAITPFV Data Journey", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg", "originalText": "BAITPFV Data Journey", "autoResize": true, "updated": 0 },
+
+    { "type": "ellipse", "id": "user", "x": 220, "y": 120, "width": 160, "height": 100, "strokeColor": "#1e1e1e", "backgroundColor": "#ffd8a8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_u", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null },
+    { "type": "text", "id": "t_u", "x": 300, "y": 160, "width": 120, "height": 22, "text": "User (small taxpayer)", "fontSize": 16, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "user", "originalText": "User (small taxpayer)", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "app", "x": 460, "y": 110, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_app_main", "type": "text" }, { "id": "t_app", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_app_main", "x": 550, "y": 122, "width": 120, "height": 22, "text": "Angular App", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "app", "originalText": "Angular App", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_app", "x": 470, "y": 150, "width": 180, "height": 54, "text": "Summary screens\nEnterprise list + filters\nDetail + export", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "app", "originalText": "Summary screens\nEnterprise list + filters\nDetail + export", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "api", "x": 460, "y": 290, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_api_main", "type": "text" }, { "id": "t_api", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_api_main", "x": 550, "y": 302, "width": 120, "height": 22, "text": "Backend API", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "api", "originalText": "Backend API", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_api", "x": 470, "y": 330, "width": 180, "height": 54, "text": "Enterprise endpoints\nTax endpoints\nInventory endpoints", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "api", "originalText": "Enterprise endpoints\nTax endpoints\nInventory endpoints", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "data", "x": 130, "y": 310, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#d0bfff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_data_main", "type": "text" }, { "id": "t_data", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_data_main", "x": 220, "y": 322, "width": 120, "height": 22, "text": "Khmer Tax Data", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "data", "originalText": "Khmer Tax Data", "autoResize": true, "updated": 0 },
+    { "type": "text", "id": "t_data", "x": 142, "y": 350, "width": 180, "height": 54, "text": "enterprise lists\ndeclaration records\npayment status", "fontSize": 14, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "left", "verticalAlign": "top", "containerId": "data", "originalText": "enterprise lists\ndeclaration records\npayment status", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "export", "x": 220, "y": 470, "width": 260, "height": 70, "strokeColor": "#1e1e1e", "backgroundColor": "#fff3bf", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_exp", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": null },
+    { "type": "text", "id": "t_exp", "x": 350, "y": 494, "width": 120, "height": 22, "text": "Excel / Report Export", "fontSize": 16, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "export", "originalText": "Excel / Report Export", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 300, "y": 170, "width": 160, "height": 0, "points": [[0, 0], [160, 0]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "user", "fixedPoint": [1, 0.5] }, "endBinding": { "elementId": "app", "fixedPoint": [0, 0.5] }, "updated": 0 },
+    { "type": "arrow", "id": "a2", "x": 570, "y": 220, "width": 0, "height": 70, "points": [[0, 0], [0, 70]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "app", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "api", "fixedPoint": [0.5, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a3", "x": 380, "y": 345, "width": 80, "height": 0, "points": [[0, 0], [80, 0]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "data", "fixedPoint": [1, 0.5] }, "endBinding": { "elementId": "api", "fixedPoint": [0, 0.5] }, "updated": 0 },
+    { "type": "arrow", "id": "a4", "x": 350, "y": 400, "width": 0, "height": 70, "points": [[0, 0], [0, 70]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "api", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "export", "fixedPoint": [0.5, 0] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}
