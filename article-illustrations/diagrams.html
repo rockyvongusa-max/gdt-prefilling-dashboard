@@ -153,13 +153,39 @@
           ctx.strokeStyle = el.strokeColor || '#1e1e1e';
           ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
           ctx.beginPath();
-          const pts = el.points || [];
-          pts.forEach((point, idx) => {
-            const px = (el.x + point[0]) * scaleX;
-            const py = (el.y + point[1]) * scaleY;
-            if (idx === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          });
+
+          const elemMap = new Map(
+            (Array.isArray(data?.elements) ? data.elements : []).map((e) => [e.id, e])
+          );
+
+          const attachment = (binding) => {
+            if (!binding || !elemMap.has(binding.elementId)) return null;
+            const shape = elemMap.get(binding.elementId);
+            const fp = binding.fixedPoint || [0.5, 0.5];
+            return {
+              x: (shape.x || 0) + (fp[0] || 0.5) * (shape.width || 0),
+              y: (shape.y || 0) + (fp[1] || 0.5) * (shape.height || 0)
+            };
+          };
+
+          const start = attachment(el.startBinding);
+          const end = attachment(el.endBinding);
+
+          if (start && end) {
+            ctx.moveTo(start.x * scaleX, start.y * scaleY);
+            ctx.lineTo(end.x * scaleX, end.y * scaleY);
+          } else {
+            const pts = el.points || [];
+            let started = false;
+            for (const p of pts) {
+              const px = (el.x + p[0]) * scaleX;
+              const py = (el.y + p[1]) * scaleY;
+              if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+            }
+            if (!started) {
+              ctx.moveTo((el.x || 0) * scaleX, (el.y || 0) * scaleY);
+            }
+          }
           ctx.stroke();
         }
         ctx.restore();
