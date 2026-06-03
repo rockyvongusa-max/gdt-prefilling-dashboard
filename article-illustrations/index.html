@@ -1,25 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BAITPFV Article Illustrations</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Article Illustrations</title>
+  <style>
+    :root {
+      --ink: #101820;
+      --paper: #f5f3ef;
+      --rule: rgba(15,15,15,0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+    main {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: start;
+    }
+    a.card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 10px 24px rgba(10,10,10,0.06);
+    }
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+    .card p {
+      margin: 0;
+      color: #5f5f5f;
+      font-size: 13px;
+    }
+    img.preview {
+      display: block;
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--rule);
+    }
+    small.meta {
+      color: #6b6b6b;
+    }
+  </style>
 </head>
 <body>
-  <header class="header">BAITPFV0.0.1 Article Illustrations</header>
-  <main class="gallery">
-    <img src="imgs/01.png" alt="framework architecture stack" />
-    <img src="imgs/02.png" alt="UI navigation flowchart" />
-    <img src="imgs/03.png" alt="data flow journey" />
-    <img src="imgs/04.png" alt="change checklist infographic" />
+  <header>
+    <h1>Article Illustrations & Diagrams</h1>
+    <nav>
+      <a href="diagrams.html">Diagrams</a>
+      <a href="comic.html">JAR comic</a>
+    </nav>
+  </header>
+  <main>
+    <a class="card" href="diagrams.html">
+      <h2>Diagrams</h2>
+      <p>Architecture, flow, and runtime diagrams.</p>
+      <small class="meta">Excalidraw gallery</small>
+    </a>
+    <a class="card" href="comic.html">
+      <h2>Comic</h2>
+      <p>Why Build a JAR? — A Deploy Story</p>
+      <small class="meta">Knowledge comic</small>
+      <img class="preview" src="comic/baitpfv-jar-story/00-cover-baitpfv-jar-story.png" alt="Cover" />
+    </a>
   </main>
-
-  <div class="lightbox" id="lightbox" hidden>
-    <button class="lightbox-close" aria-label="Close">×</button>
-    <img class="lightbox-image" src="" alt="" />
-  </div>
-
-  <script src="app.js"></script>
 </body>
 </html>
