@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Angkor Wat - Procedural Three.js</title>
+<style>
+  html, body { margin: 0; overflow: hidden; background: #1a1410; font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif; }
+  canvas { display: block; }
+  #info { position: absolute; top: 10px; left: 10px; color: #f4e4bc; background: rgba(0,0,0,0.55); padding: 10px 14px; border-radius: 6px; font-size: 13px; pointer-events: none; line-height: 1.6; }
+  #info b { color: #ffcc80; }
+</style>
+</head>
+<body>
+<div id="info"><b>Angkor Wat</b> - Procedural Three.js<br />Drag to orbit · Scroll to zoom · Right-drag to pan</div>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.157.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x8ecae6);
+scene.fog = new THREE.Fog(0x8ecae6, 80, 220);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+document.body.appendChild(renderer.domElement);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 500);
+camera.position.set(55, 40, 60);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.4;
+controls.maxPolarAngle = Math.PI / 2.1;
+controls.minDistance = 25;
+controls.maxDistance = 140;
+controls.target.set(0, 4, 0);
+
+const ambientLight = new THREE.AmbientLight(0x6b7d95, 1.2);
+scene.add(ambientLight);
+const hemiLight = new THREE.HemisphereLight(0xfff3d4, 0x4a5f3a, 0.9);
+scene.add(hemiLight);
+const sunLight = new THREE.DirectionalLight(0xffb06b, 3.2);
+sunLight.position.set(60, 40, -25);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 2048;
+sunLight.shadow.mapSize.height = 2048;
+sunLight.shadow.camera.near = 1;
+sunLight.shadow.camera.far = 200;
+sunLight.shadow.camera.left = -55;
+sunLight.shadow.camera.right = 55;
+sunLight.shadow.camera.top = 55;
+sunLight.shadow.camera.bottom = -55;
+sunLight.shadow.bias = -0.0003;
+sunLight.shadow.normalBias = 0.02;
+scene.add(sunLight);
+
+const matSandstone = new THREE.MeshStandardMaterial({ color: 0xd4b483, roughness: 0.88, metalness: 0.04 });
+const matSandstoneLight = new THREE.MeshStandardMaterial({ color: 0xe8d3ab, roughness: 0.82, metalness: 0.04 });
+const matLaterite = new THREE.MeshStandardMaterial({ color: 0xb06a4a, roughness: 0.92, metalness: 0.02 });
+const matWater = new THREE.MeshStandardMaterial({ color: 0x1d4f6e, roughness: 0.18, metalness: 0.18, transparent: true, opacity: 0.9 });
+const matRoofTiles = new THREE.MeshStandardMaterial({ color: 0x8f2c1e, roughness: 0.78, metalness: 0.08 });
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x3f5638, roughness: 0.96, metalness: 0.0 });
+
+function boxWShadow(w, h, d, material) {
+  const geo = new THREE.BoxGeometry(w, h, d);
+  const mesh = new THREE.Mesh(geo, material);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+const waterGeo = new THREE.PlaneGeometry(100, 100);
+const water = new THREE.Mesh(waterGeo, matWater);
+water.rotation.x = -Math.PI / 2;
+water.position.y = -0.2;
+water.receiveShadow = true;
+scene.add(water);
+
+const outerSize = 48;
+const innerSize = 43.2;
+const wallHeight = 2.2;
+const walls = [
+  { x: 0, z: -(innerSize + outerSize) / 2, w: outerSize, d: 2.4 },
+  { x: 0, z: (innerSize + outerSize) / 2, w: outerSize, d: 2.4 },
+  { x: -(innerSize + outerSize) / 2, z: 0, w: 2.4, d: outerSize },
+  { x: (innerSize + outerSize) / 2, z: 0, w: 2.4, d: outerSize },
+];
+walls.forEach(w => {
+  const mesh = boxWShadow(w.w, wallHeight, w.d, matLaterite);
+  mesh.position.set(w.x, wallHeight / 2, w.z);
+  scene.add(mesh);
+});
+
+const terraces = [
+  { w: 40, d: 40, h: 1.2, y: 0.05, galleryH: 3.8 },
+  { w: 28, d: 28, h: 1.2, y: 1.3, galleryH: 3.4 },
+  { w: 18, d: 18, h: 1.2, y: 2.55, galleryH: 3.0 },
+];
+terraces.forEach(t => {
+  const terrace = boxWShadow(t.w, t.h, t.d, matSandstone);
+  terrace.position.y = t.y + t.h / 2;
+  scene.add(terrace);
+
+  const galleryY = t.y + t.h + t.galleryH / 2;
+  const halfW = t.w / 2;
+  const halfD = t.d / 2;
+  const sides = [
+    { x: 0, z: -(halfD + 1.2), w: t.w + 2.8, d: 2.4 },
+    { x: 0, z: halfD + 1.2, w: t.w + 2.8, d: 2.4 },
+    { x: -(halfW + 0.55), z: 0, w: 1.1, d: t.d + 0.7 },
+    { x: halfW + 0.55, z: 0, w: 1.1, d: t.d + 0.7 },
+  ];
+  sides.forEach(s => {
+    const mesh = boxWShadow(s.w, t.galleryH, s.d, matSandstoneLight);
+    mesh.position.set(s.x, galleryY, s.z);
+    scene.add(mesh);
+  });
+});
+
+const topTerrace = boxWShadow(10, 1.0, 10, matLaterite);
+topTerrace.position.y = 3.85;
+scene.add(topTerrace);
+
+const topGalleryFront = new THREE.Mesh(new THREE.BoxGeometry(11, 2.0, 1.2), matSandstoneLight);
+topGalleryFront.position.set(0, 4.85, 5.6);
+topGalleryFront.castShadow = true;
+topGalleryFront.receiveShadow = true;
+scene.add(topGalleryFront);
+const topGalleryBack = topGalleryFront.clone();
+topGalleryBack.position.z = -5.6;
+scene.add(topGalleryBack);
+
+function createPrasat(scaleSym = 1.0) {
+  const root = new THREE.Group();
+  const base = boxWShadow(2.4 * scaleSym, 0.45 * scaleSym, 2.4 * scaleSym, matSandstoneLight);
+  base.position.y = 0.23 * scaleSym;
+  root.add(base);
+
+  const tiers = [
+    { rTop: 1.65, rBot: 2.0, h: 1.4, y: 0.85, seg: 8 },
+    { rTop: 1.25, rBot: 1.65, h: 1.5, y: 2.05, seg: 8 },
+    { rTop: 0.82, rBot: 1.25, h: 1.8, y: 3.35, seg: 7 },
+    { rTop: 0.48, rBot: 0.82, h: 2.0, y: 5.05, seg: 6 },
+    { rTop: 0.22, rBot: 0.48, h: 1.55, y: 6.95, seg: 5 },
+    { rTop: 0.05, rBot: 0.22, h: 1.1, y: 8.35, seg: 4 },
+  ];
+  tiers.forEach(tier => {
+    const mesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(tier.rTop * scaleSym, tier.rBot * scaleSym, tier.h * scaleSym, tier.seg),
+      matSandstoneLight
+    );
+    mesh.position.y = tier.y * scaleSym;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    root.add(mesh);
+  });
+  return root;
+}
+
+const towerPositions = [
+  { x: 0, z: 0, s: 1.25 },
+  { x: -5.4, z: -5.4, s: 0.78 },
+  { x: 5.4, z: -5.4, s: 0.78 },
+  { x: -5.4, z: 5.4, s: 0.78 },
+  { x: 5.4, z: 5.4, s: 0.78 },
+];
+towerPositions.forEach(pos => {
+  const tower = createPrasat(pos.s);
+  tower.position.set(pos.x, 4.85, pos.z);
+  scene.add(tower);
+});
+
+function addCrenellation(startX, startZ, length, axis) {
+  const count = Math.floor(length / 1.8);
+  for (let i = 0; i < count; i++) {
+    const cren = boxWShadow(0.8, 0.6, 0.8, matRoofTiles);
+    const offset = (i - count / 2) * 1.8;
+    cren.position.set(axis === "x" ? startX + offset : startX, 5.75, axis === "z" ? startZ + offset : startZ);
+    scene.add(cren);
+  }
+}
+addCrenellation(0, 19.95, 40, "x");
+addCrenellation(0, -19.95, 40, "x");
+addCrenellation(-19.95, 0, 40, "z");
+addCrenellation(19.95, 0, 40, "z");
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(220, 220), groundMat);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.4;
+ground.receiveShadow = true;
+scene.add(ground);
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  scene.position.y = Math.sin(clock.getElapsedTime() * 0.35) * 0.07;
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+window.__angkorReady = true;
+</script>
+</body>
+</html>
