@@ -4,19 +4,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GDT / BAITPFV — Diagrams</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="diagrams.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="app-header">
     <div class="wrap">
       <h1>Diagrams</h1>
       <p class="sub">Architecture · Navigation · Data · Runtime</p>
     </div>
   </header>
 
+  <nav class="filter-bar">
+    <a class="btn active" data-filter="all">All</a>
+    <a class="btn" data-filter="architecture">Architecture</a>
+    <a class="btn" data-filter="flow">Flow</a>
+    <a class="btn" data-filter="navigation">Navigation</a>
+    <a class="btn" data-filter="runtime">Runtime</a>
+  </nav>
+
   <main class="wrap">
     <div id="gallery" class="gallery"></div>
   </main>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <header class="modal-header">
+        <h2 id="modal-title">Diagram</h2>
+        <button id="modal-close" class="icon-btn" aria-label="Close">×</button>
+      </header>
+      <canvas id="modal-canvas" class="canvas"></canvas>
+      <footer class="modal-footer">
+        <a id="modal-source" class="btn-primary" href="#" target="_blank" rel="noopener">Open editable source</a>
+      </footer>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="wrap">
@@ -27,12 +49,12 @@
   <script>
     const DIAGRAMS = [
       { id: 'baitpfv-architecture', title: 'BAITPFV Core Architecture', category: 'architecture' },
-      { id: 'baitpfv-ss-architecture', title: 'BAITPFV — SS Architecture', category: 'architecture' },
+      { id: 'baitpfv-ss-architecture', title: 'BAITPFV SS Architecture', category: 'architecture' },
       { id: 'gdt-dashboard-ss-architecture', title: 'GDT Dashboard System Architecture', category: 'architecture' },
       { id: 'prefilling-ui-architecture', title: 'Prefilling UI Architecture', category: 'architecture' },
       { id: 'baitpfv-user-flow', title: 'BAITPFV Core User Flow', category: 'flow' },
-      { id: 'baitpfv-data-journey', title: 'Data Journey (Excalidraw)', category: 'flow' },
-      { id: 'baitpfv-navigation-ss', title: 'Navigation / Sections', category: 'navigation' },
+      { id: 'baitpfv-data-journey', title: 'BAITPFV Data Journey', category: 'flow' },
+      { id: 'baitpfv-navigation-ss', title: 'BAITPFV Navigation / Sections', category: 'navigation' },
       { id: 'prefilling-ui-data-flow', title: 'Prefilling UI Data Flow', category: 'flow' },
       { id: 'deploy-runtime', title: 'Deploy / Runtime Topology', category: 'runtime' },
       { id: 'integration-sequence', title: 'Key Integration Sequence', category: 'flow' },
@@ -46,19 +68,35 @@
       runtime: '#d0bfff'
     };
 
-    async function loadDiagram(id) {
-      const res = await fetch(`diagrams/${id}.excalidraw`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Failed ${res.status}`);
-      return res.json();
+    const gallery = document.getElementById('gallery');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalCanvas = document.getElementById('modal-canvas');
+    const modalSource = document.getElementById('modal-source');
+    const modalClose = document.getElementById('modal-close');
+    const filterButtons = document.querySelectorAll('.filter-bar .btn');
+
+    function setFilter(filter) {
+      filterButtons.forEach((btn) => {
+        const selected = btn.dataset.filter === filter;
+        btn.classList.toggle('active', selected);
+      });
+      document.querySelectorAll('.card').forEach((card) => {
+        const category = card.dataset.category || 'all';
+        const visible = filter === 'all' || category === filter;
+        card.hidden = !visible;
+      });
     }
 
-    function renderDiagram(data, canvasId) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return;
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+    });
+
+    function renderDiagramToCanvas(data, canvas) {
       const ctx = canvas.getContext('2d');
       const dpr = window.devicePixelRatio || 1;
-      const W = canvas.offsetWidth;
-      const H = 520;
+      const W = canvas.clientWidth || 900;
+      const H = 600;
       canvas.width = W * dpr;
       canvas.height = H * dpr;
       ctx.scale(dpr, dpr);
@@ -66,13 +104,14 @@
       const scaleX = W / 900;
       const scaleY = H / 750;
 
-      ctx.fillStyle = data?.appState?.viewBackgroundColor || '#ffffff';
+      ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      for (const el of (data?.elements || [])) {
+      const elements = Array.isArray(data?.elements) ? data.elements : [];
+      elements.forEach((el) => {
         ctx.save();
-        const x = el.x * scaleX;
-        const y = el.y * scaleY;
+        const x = (el.x || 0) * scaleX;
+        const y = (el.y || 0) * scaleY;
         const w = (el.width || 0) * scaleX;
         const h = (el.height || 0) * scaleY;
 
@@ -90,68 +129,113 @@
           ctx.strokeStyle = el.strokeColor || '#1e1e1e';
           ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
           ctx.beginPath();
-          ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+          ctx.ellipse(x + w / 2, y + h / 2, Math.max(w / 2, 0), Math.max(h / 2, 0), 0, 0, Math.PI * 2);
           ctx.fill();
           if (el.strokeWidth > 0) ctx.stroke();
         } else if (el.type === 'text') {
-          const fontSize = (el.fontSize || 16) * Math.min(scaleX, scaleY);
+          const fontSize = Math.max((el.fontSize || 16) * Math.min(scaleX, scaleY), 12);
           ctx.font = `${fontSize}px system-ui, sans-serif`;
           ctx.fillStyle = el.strokeColor || '#1e1e1e';
           ctx.textAlign = el.textAlign === 'center' ? 'center' : el.textAlign === 'right' ? 'right' : 'left';
           ctx.textBaseline = 'middle';
           const text = el.originalText || el.text || '';
           const lines = String(text).split('\n');
-          const lh = fontSize * 1.2;
+          const lineHeight = fontSize * 1.2;
+          const textWidth = ctx.measureText(lines[0] || ' ').width || w;
           const tx = el.textAlign === 'center' ? x + w / 2 : el.textAlign === 'right' ? x + w : x;
-          const ty = y + h / 2 - (lines.length * lh) / 2 + lh / 2;
-          let yy = ty;
-          for (const line of lines) {
-            ctx.fillText(line, tx, yy);
-            yy += lh;
-          }
+          const ty = y + h / 2 - Math.max((lines.length - 1) * lineHeight, 0) / 2;
+          let currentY = ty;
+          lines.forEach((line) => {
+            ctx.fillText(line, tx, currentY);
+            currentY += lineHeight;
+          });
         } else if (el.type === 'arrow') {
           ctx.strokeStyle = el.strokeColor || '#1e1e1e';
           ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
           ctx.beginPath();
-          let started = false;
-          for (const p of el.points || []) {
-            const px = (el.x + p[0]) * scaleX;
-            const py = (el.y + p[1]) * scaleY;
-            if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
-          }
+          const pts = el.points || [];
+          pts.forEach((point, idx) => {
+            const px = (el.x + point[0]) * scaleX;
+            const py = (el.y + point[1]) * scaleY;
+            if (idx === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          });
           ctx.stroke();
         }
-
         ctx.restore();
-      }
+      });
+    }
+
+    async function loadDiagram(id) {
+      const res = await fetch(`diagrams/${id}.excalidraw`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Failed ${res.status}`);
+      return res.json();
     }
 
     async function buildGallery() {
-      const gallery = document.getElementById('gallery');
-      for (const item of DIAGRAMS) {
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="badge" style="background:${CATEGORY_COLORS[item.category] || '#e2e8f0'}">${item.category}</span>
-            <h2>${item.title}</h2>
-          </div>
-          <canvas id="canvas-${item.id}" class="canvas"></canvas>
-          <div class="card-actions">
-            <a class="btn" href="diagrams/${item.id}.excalidraw" target="_blank" rel="noopener">Open editable source</a>
-          </div>
-        `;
-        gallery.appendChild(card);
-        try {
-          const data = await loadDiagram(item.id);
-          requestAnimationFrame(() => renderDiagram(data, `canvas-${item.id}`));
-        } catch (e) {
-          card.querySelector('.card-header').insertAdjacentHTML('beforeend', `<p class="err">${e.message}</p>`);
-        }
-      }
+      const cards = await Promise.all(
+        DIAGRAMS.map(async (item) => {
+          const article = document.createElement('article');
+          article.className = 'card';
+          article.dataset.category = item.category;
+          article.innerHTML = `
+            <div class="card-head">
+              <span class="badge" style="background:${CATEGORY_COLORS[item.category] || '#e2e8f0'}">${item.category}</span>
+              <h2>${item.title}</h2>
+            </div>
+            <canvas id="canvas-${item.id}" class="canvas"></canvas>
+            <div class="card-actions">
+              <button class="btn-primary" data-open="${item.id}">Open full screen</button>
+              <a class="btn-primary" href="diagrams/${item.id}.excalidraw" target="_blank" rel="noopener">Editable source</a>
+            </div>
+          `;
+          try {
+            const data = await loadDiagram(item.id);
+            requestAnimationFrame(() => renderDiagramToCanvas(data, article.querySelector(`#canvas-${item.id}`)));
+          } catch (error) {
+            const errorEl = document.createElement('p');
+            errorEl.className = 'err';
+            errorEl.textContent = error.message;
+            article.querySelector('.card-head').appendChild(errorEl);
+          }
+          return article;
+        })
+      );
+      cards.forEach((card) => gallery.appendChild(card));
     }
 
-    buildGallery();
+    function openModal(item) {
+      modalTitle.textContent = item.title;
+      modalSource.href = `diagrams/${item.id}.excalidraw`;
+      modal.hidden = false;
+      loadDiagram(item.id).then((data) => renderDiagramToCanvas(data, modalCanvas)).catch((err) => {
+        modalTitle.textContent = `${item.title} — ${err.message}`;
+      });
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+    gallery.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-open]');
+      if (!button) return;
+      const id = button.dataset.open;
+      const item = DIAGRAMS.find((entry) => entry.id === id);
+      if (item) openModal(item);
+    });
+
+    buildGallery().catch((error) => {
+      const errorEl = document.createElement('p');
+      errorEl.className = 'err';
+      errorEl.textContent = `Gallery failed: ${error.message}`;
+      gallery.appendChild(errorEl);
+    });
   </script>
 </body>
 </html>
