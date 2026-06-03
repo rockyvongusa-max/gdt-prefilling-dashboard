@@ -22,7 +22,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x8ecae6);
-scene.fog = new THREE.Fog(0x8ecae6, 80, 220);
+scene.fog = new THREE.Fog(0x8ecae6, 70, 220);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -71,6 +71,16 @@ const matLaterite = new THREE.MeshStandardMaterial({ color: 0xb06a4a, roughness:
 const matWater = new THREE.MeshStandardMaterial({ color: 0x1d4f6e, roughness: 0.18, metalness: 0.18, transparent: true, opacity: 0.9 });
 const matRoofTiles = new THREE.MeshStandardMaterial({ color: 0x8f2c1e, roughness: 0.78, metalness: 0.08 });
 const groundMat = new THREE.MeshStandardMaterial({ color: 0x3f5638, roughness: 0.96, metalness: 0.0 });
+const matSun = new THREE.MeshBasicMaterial({ color: 0xfff2b2 });
+const moonMat = new THREE.MeshBasicMaterial({ color: 0xfffbe0 });
+const beamMat = new THREE.MeshBasicMaterial({ color: 0xc9a1ff, transparent: true, opacity: 0.25, depthWrite: false, blending: THREE.AdditiveBlending });
+const runeMat = new THREE.MeshBasicMaterial({ color: 0xffdd77, transparent: true, opacity: 0.28, depthWrite: false, blending: THREE.AdditiveBlending });
+const fireflyMat = new THREE.MeshBasicMaterial({ color: 0xffff99, transparent: true, opacity: 0.85, depthWrite: false });
+const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, sizeAttenuation: true, transparent: true, opacity: 0.8, depthWrite: false });
+
+const skyTop = new THREE.Color(0x7ecbf7);
+const skyBottom = new THREE.Color(0xd9f0ff);
+const groundAlive = new THREE.Color(0x3f5638);
 
 function boxWShadow(w, h, d, material) {
   const geo = new THREE.BoxGeometry(w, h, d);
@@ -214,159 +224,102 @@ let introTime = 0;
 function animate() {
   requestAnimationFrame(animate);
   const elapsed = clock.getElapsedTime();
-  const delta = Math.min(clock.getDelta(), 0.05);
-
   scene.position.y = Math.sin(elapsed * 0.35) * 0.07;
+  controls.update();
+  renderer.render(scene, camera);
 
   if (!introComplete) {
-    introTime += delta;
+    introTime += Math.min(clock.getDelta(), 0.05);
     const t = Math.min(introTime / 4, 1);
     const ease = 1 - Math.pow(1 - t, 4);
     camera.position.lerp(new THREE.Vector3(55, 40, 60), ease * 0.02);
     controls.target.lerp(new THREE.Vector3(0, 4, 0), ease * 0.02);
-    if (t >= 1) introComplete = true;
+    introComplete = t >= 1;
   }
-
-  controls.update();
-  renderer.render(scene, camera);
 }
 animate();
 
 // ============================================
-// SURPRISE: Mystical Enhancements
+// SURPRISE X2: Evening Ritual Surprises
 // ============================================
-const mats = {};
 
-mats.lotusMat = new THREE.MeshStandardMaterial({ color: 0xffe4f0, roughness: 0.3, metalness: 0.1, emissive: 0xff1a75, emissiveIntensity: 0.25 });
-mats.lotusCenterMat = new THREE.MeshStandardMaterial({ color: 0xffd000, roughness: 0.2, metalness: 0.2, emissive: 0xffaa00, emissiveIntensity: 0.6 });
-mats.glowMat = new THREE.MeshBasicMaterial({ color: 0xffaa33, transparent: true, opacity: 0.25, depthWrite: false });
-mats.spiritMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, depthWrite: false });
+// twilight sun
+const sunGeoX2 = new THREE.SphereGeometry(7, 24, 24);
+const sunX2 = new THREE.Mesh(sunGeoX2, matSun);
+sunX2.position.set(70, 18, -60);
+scene.add(sunX2);
 
-const lotusGroup = new THREE.Group();
+// moonrise
+const moonGeoX2 = new THREE.SphereGeometry(4, 22, 22);
+const moonX2 = new THREE.Mesh(moonGeoX2, moonMat);
+moonX2.position.set(-55, 34, -45);
+scene.add(moonX2);
 
-function createLotus(x, z, s = 1.0) {
-  const g = new THREE.Group();
-
-  for (let i = 0; i < 7; i++) {
-    const petalGeo = new THREE.CylinderGeometry(0.1, 0.45, 1.6, 6);
-    const petal = new THREE.Mesh(petalGeo, mats.lotusMat);
-    petal.rotation.x = (i / 7) * Math.PI * 0.9 - Math.PI * 0.45;
-    petal.rotation.z = (i / 7) * Math.PI * 0.9 - Math.PI * 0.45;
-    petal.position.y = 0.15;
-    petal.scale.setScalar(s);
-    g.add(petal);
-  }
-
-  const centerGeo = new THREE.SphereGeometry(0.25 * s, 8, 6);
-  const center = new THREE.Mesh(centerGeo, mats.lotusCenterMat);
-  center.position.y = 0.35 * s;
-  g.add(center);
-
-  g.position.set(x, -0.15, z);
-  return g;
+// stars
+const starGeoX2 = new THREE.BufferGeometry();
+const starPositionsX2 = new Float32Array(4000 * 3);
+for (let i = 0; i < 4000; i++) {
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.random() * Math.PI * 0.55;
+  const r = 160;
+  starPositionsX2[i * 3] = Math.cos(theta) * Math.cos(phi) * r;
+  starPositionsX2[i * 3 + 1] = Math.sin(phi) * r + 14;
+  starPositionsX2[i * 3 + 2] = Math.sin(theta) * Math.cos(phi) * r;
 }
+starGeoX2.setAttribute('position', new THREE.BufferAttribute(starPositionsX2, 3));
+const starsX2 = new THREE.Points(starGeoX2, starMat);
+scene.add(starsX2);
 
-const lotusPositions = [
-  [-12, -10, 1.2],
-  [10, 8, 1.0],
-  [-8, 12, 1.1],
-  [14, -4, 1.3],
-  [0, 15, 1.0],
-  [-15, -3, 1.1],
-  [6, -13, 1.2],
-  [3, 3, 0.8],
-];
-
-lotusPositions.forEach(([lx, lz, ls]) => lotusGroup.add(createLotus(lx, lz, ls)));
-scene.add(lotusGroup);
-
-const haloGroup = new THREE.Group();
-const towerCenters = [
-  new THREE.Vector3(0, 9.5, 0),
-  new THREE.Vector3(-5.4, 9.5, -5.4),
-  new THREE.Vector3(5.4, 9.5, -5.4),
-  new THREE.Vector3(-5.4, 9.5, 5.4),
-  new THREE.Vector3(5.4, 9.5, 5.4),
-];
-
-towerCenters.forEach((c) => {
-  const haloGeo = new THREE.TorusGeometry(3.2, 0.15, 8, 28);
-  const halo = new THREE.Mesh(haloGeo, mats.glowMat);
-  halo.position.copy(c);
-  halo.rotation.x = Math.PI / 2.1;
-  halo.userData.baseY = c.y;
-  haloGroup.add(halo);
+// celestial beams from towers
+const beamGroupX2 = new THREE.Group();
+const beamGeoX2 = new THREE.CylinderGeometry(0.25, 1.2, 12, 8, 1, true);
+[
+  [0, 10.5, 0],
+  [-5.4, 10.5, -5.4],
+  [5.4, 10.5, -5.4],
+  [-5.4, 10.5, 5.4],
+  [5.4, 10.5, 5.4],
+].forEach(([bx, by, bz]) => {
+  const beamX2 = new THREE.Mesh(beamGeoX2, beamMat);
+  beamX2.position.set(bx, by, bz);
+  beamX2.rotation.x = Math.PI / 15;
+  beamX2.userData = { baseY: by, phase: Math.random() * Math.PI * 2 };
+  beamGroupX2.add(beamX2);
 });
-scene.add(haloGroup);
+scene.add(beamGroupX2);
 
-const particlesGeo = new THREE.BufferGeometry();
-const particleCount = 260;
-const positions = new Float32Array(particleCount * 3);
-for (let i = 0; i < particleCount; i++) {
-  positions[i * 3] = (Math.random() - 0.5) * 80;
-  positions[i * 3 + 1] = Math.random() * 20 + 1;
-  positions[i * 3 + 2] = (Math.random() - 0.5) * 80;
+// floating runes around central tower
+const runeGroupX2 = new THREE.Group();
+const runeGeoX2 = new THREE.TorusGeometry(1.3, 0.08, 6, 24);
+for (let i = 0; i < 6; i++) {
+  const runeX2 = new THREE.Mesh(runeGeoX2, runeMat);
+  const angleX2 = (i / 6) * Math.PI * 2;
+  runeX2.position.set(Math.cos(angleX2) * 3.1, 6 + i * 0.6, Math.sin(angleX2) * 3.1);
+  runeX2.rotation.x = Math.PI / 3;
+  runeX2.rotation.y = angleX2;
+  runeX2.userData = { angle: angleX2, baseY: 6 + i * 0.6, phase: i };
+  runeGroupX2.add(runeX2);
 }
-particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-const particles = new THREE.Points(particlesGeo, mats.spiritMat);
-scene.add(particles);
+runeGroupX2.position.set(0, 4.85, 0);
+scene.add(runeGroupX2);
 
-const spiritGroup = new THREE.Group();
-const spiritMatOrange = new THREE.MeshBasicMaterial({ color: 0xffaa22, transparent: true, opacity: 0.35, depthWrite: false });
-const spiritMatBlue = new THREE.MeshBasicMaterial({ color: 0x88ccff, transparent: true, opacity: 0.35, depthWrite: false });
-
-for (let i = 0; i < 12; i++) {
-  const spiritGeo = new THREE.SphereGeometry(0.35, 8, 8);
-  const spirit = new THREE.Mesh(spiritGeo, i % 2 === 0 ? spiritMatOrange : spiritMatBlue);
-  spirit.userData = {
-    baseX: (Math.random() - 0.5) * 35,
-    baseZ: (Math.random() - 0.5) * 35,
+// fireflies
+const fireflyGroupX2 = new THREE.Group();
+const fireflyGeoX2 = new THREE.SphereGeometry(0.18, 8, 8);
+for (let i = 0; i < 35; i++) {
+  const fireflyX2 = new THREE.Mesh(fireflyGeoX2, fireflyMat);
+  fireflyX2.userData = {
+    baseX: (Math.random() - 0.5) * 38,
+    baseZ: (Math.random() - 0.5) * 38,
+    baseY: 0.8 + Math.random() * 5,
     phase: Math.random() * Math.PI * 2,
-    speed: 0.2 + Math.random() * 0.6,
+    speed: 0.4 + Math.random() * 0.9,
   };
-  spirit.position.set(spirit.userData.baseX, 3 + Math.random() * 6, spirit.userData.baseZ);
-  spiritGroup.add(spirit);
+  fireflyX2.position.set(fireflyX2.userData.baseX, fireflyX2.userData.baseY, fireflyX2.userData.baseZ);
+  fireflyGroupX2.add(fireflyX2);
 }
-scene.add(spiritGroup);
+scene.add(fireflyGroupX2);
 
-const origin = new THREE.Vector3();
-const yAxis = new THREE.Vector3(0, 1, 0);
-
-function animateExtra() {
-  const t = clock.getElapsedTime();
-
-  lotusGroup.children.forEach((lotus) => {
-    lotus.rotation.y = t * 0.5;
-    lotus.position.y = -0.15 + Math.sin(t * 1.2) * 0.04;
-  });
-
-  haloGroup.children.forEach((halo, idx) => {
-    halo.rotation.z = Math.sin(t * 0.6 + idx) * 0.15;
-    halo.position.y = halo.userData.baseY + Math.sin(t * 0.9 + idx) * 0.35;
-    halo.material.opacity = 0.18 + Math.sin(t * 1.7 + idx * 1.3) * 0.12;
-  });
-
-  const posArr = particles.geometry.attributes.position.array;
-  for (let i = 0; i < particleCount; i++) {
-    posArr[i * 3 + 1] += Math.sin(t * 1.3 + i) * 0.004;
-    if (posArr[i * 3 + 1] > 22) posArr[i * 3 + 1] = 1;
-  }
-  particles.geometry.attributes.position.needsUpdate = true;
-
-  spiritGroup.children.forEach((spirit) => {
-    const s = spirit.userData;
-    spirit.position.x = s.baseX + Math.sin(t * s.speed + s.phase) * 2;
-    spirit.position.z = s.baseZ + Math.cos(t * s.speed + s.phase) * 2.2;
-    spirit.position.y = 3.5 + Math.sin(t * 1.4 + s.phase) * 1.3;
-    spirit.rotation.y = t * 2;
-  });
-}
-
-const baseAnimate = animate;
-animate = function () {
-  baseAnimate();
-  animateExtra();
-};
 window.__angkorReady = true;
 window.angkorEnhanced = true;
 </script>
