@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hermes Pixel Office</title>
+<style>
+  html, body {
+    margin: 0;
+    background:
+      radial-gradient(circle at 10% 10%, #1a2639 0%, #0b101c 60%, #05070d 100%);
+    color: #e7e9ee;
+    font-family: "Courier New", monospace;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 18px;
+    background: #0f1422f0;
+    border: 1px solid #25304d;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+  }
+  .header .title {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #ffde85;
+    text-shadow: 0 0 12px #ff6b1a80;
+  }
+  .header .badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: #162036;
+    color: #95a6c8;
+    border: 1px solid #223356;
+  }
+  .grid-status {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .card {
+    background: #0f1422f0;
+    border: 1px solid #25304d;
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .label {
+    color: #8ba3c8;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+  .value {
+    color: #ffde85;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 6px;
+    text-shadow: 0 0 10px #ff8a0080;
+  }
+  canvas {
+    display: block;
+    border-radius: 12px;
+    border: 1px solid #25304d;
+    background:
+      linear-gradient(#18233a, #0e1424);
+    box-shadow: inset 0 0 35px #00000060, 0 10px 40px #00000050;
+    image-rendering: pixelated;
+    width: 100%;
+    height: auto;
+  }
+  .tip {
+    margin-top: 12px;
+    color: #7aa0cc;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="title">H.E.R.M.E.S. PIXEL OFFICE</div>
+      <div class="badge" id="uptimeBadge">LIVE</div>
+    </div>
+
+    <div class="grid-status">
+      <div class="card">
+        <div class="label">ACTIVE AGENTS</div>
+        <div class="value" id="activeAgents">3</div>
+      </div>
+      <div class="card">
+        <div class="label">TASKS IN FLIGHT</div>
+        <div class="value" id="tasksInFlight">7</div>
+      </div>
+      <div class="card">
+        <div class="label">COMPLETED</div>
+        <div class="value" id="completedCount">124</div>
+      </div>
+    </div>
+
+    <canvas id="office" width="960" height="560" aria-label="Pixel office simulation showing 3 real-time agents"></canvas>
+    <div class="tip">This is a live 2D simulation inspired by the Pixel Agents office concept. Hermes Agent does not ship a real-time animation API for this view yet; this demo shows the intended look-and-feel with simulated activity.</div>
+  </div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('office');
+  const ctx = canvas.getContext('2d');
+  const text = ctx.getContextAttributes ? null : null;
+
+  // Disable smoothing for crisp pixels
+  ctx.imageSmoothingEnabled = false;
+
+  // Palette: retro office fantasy
+  const P = {
+    bg: '#141c2b',
+    floor: '#273352',
+    floorLight: '#3a4b72',
+    wall: '#1a2035',
+    wallTrim: '#2e3d66',
+    desk: '#4a3b2b',
+    deskHighlight: '#6e5740',
+    plant: '#3d5c3a',
+    leaf: '#5f8c58',
+    pot: '#8c5e44',
+    fridge: '#8899aa',
+    water: '#8db4c8',
+    waterSurface: '#a8d4e6',
+    clock: '#d6c9a7',
+    clockHand: '#111827',
+    rug: '#4a2e3d',
+    highlight: '#ffc963',
+    agentHair1: '#1f1f2e',
+    agentHair2: '#9e5a3c',
+    agentShirt1: '#4f7cac',
+    agentShirt2: '#7a3b3b',
+    agentSkin: '#f3d2b5',
+    agentShadow: '#0b122044',
+    lamp: '#ffe1a6',
+    screen: '#6db3d6',
+    screenText: '#cfefff',
+  };
+
+  function rect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  function drawRoundedRect(x, y, w, h, r, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawCharacter(x, y, cfg) {
+    const {hair, shirt, state, bob} = cfg;
+    ctx.save();
+    ctx.translate(x, y + bob);
+
+    // Shadow
+    ctx.fillStyle = P.agentShadow;
+    ctx.beginPath();
+    ctx.ellipse(0, 10, 14, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Body
+    ctx.fillStyle = shirt;
+    ctx.fillRect(-10, -4, 20, 16);
+
+    // Head
+    ctx.fillStyle = P.agentSkin;
+    ctx.fillRect(-7, -18, 14, 14);
+
+    // Hair
+    ctx.fillStyle = hair;
+    ctx.fillRect(-8, -22, 16, 7);
+    ctx.fillRect(-8, -18, 2, 6);
+    ctx.fillRect(6, -18, 2, 6);
+
+    // Eyes (pixel blink state)
+    ctx.fillStyle = '#111827';
+    ctx.fillRect(-4, -13, 2, 2);
+    ctx.fillRect(2, -13, 2, 2);
+    if (state === 'sleeping') {
+      ctx.fillStyle = '#111827';
+      ctx.fillRect(-4, -13, 2, 1);
+      ctx.fillRect(2, -13, 2, 1);
+    }
+
+    // Activity indicator
+    if (state === 'typing') {
+      ctx.fillStyle = P.screenText;
+      rect(-12, 4, 24, 2);
+    } else if (state === 'reading') {
+      ctx.fillStyle = '#ffe1a6';
+      rect(8, -8, 6, 8);
+    } else if (state === 'moving') {
+      ctx.fillStyle = '#8fd6ff';
+      rect(-14, -2, 4, 4);
+      rect(10, -2, 4, 4);
+    } else if (state === 'meeting') {
+      ctx.fillStyle = '#ffd080';
+      rect(-6, -26, 12, 2);
+    } else if (state === 'idle') {
+      ctx.fillStyle = '#ff7b7b';
+      rect(-2, -26, 4, 2);
+    }
+
+    ctx.restore();
+  }
+
+  function drawPlant(x, y) {
+    rect(x - 6, y - 6, 12, 12, P.pot);
+    rect(x - 10, y - 18, 20, 14, P.plant);
+    rect(x - 8, y - 24, 8, 10, P.leaf);
+    rect(x, y - 26, 10, 12, P.leaf);
+    rect(x - 4, y - 30, 6, 6, P.leaf);
+  }
+
+  function drawDesk(x, y, monitor = true) {
+    rect(x - 40, y - 6, 80, 24, P.desk);
+    rect(x - 36, y - 2, 72, 14, P.deskHighlight);
+
+    if (monitor) {
+      rect(x + 14, y - 24, 22, 16, P.screen);
+      rect(x + 18, y - 20, 14, 8, P.screenText);
+    }
+  }
+
+  function drawClock(x, y, time) {
+    rect(x - 16, y - 16, 32, 32, P.clock);
+    rect(x - 12, y - 12, 24, 24, '#0b122044');
+    const hx = Math.cos(time * 0.02) * 6;
+    const hy = Math.sin(time * 0.02) * 6;
+    ctx.strokeStyle = P.clockHand;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + hx, y + hy);
+    ctx.stroke();
+  }
+
+  function drawRug(x, y) {
+    ctx.fillStyle = P.rug;
+    ctx.fillRect(x - 70, y - 10, 140, 20);
+    ctx.fillStyle = '#5a3a4f';
+    ctx.fillRect(x - 60, y - 6, 120, 12);
+  }
+
+  const agents = [
+    { x: 220, y: 220, hair: P.agentHair1, shirt: P.agentShirt1, state: 'typing', phase: 0 },
+    { x: 380, y: 220, hair: P.agentHair2, shirt: P.agentShirt2, state: 'reading', phase: 2 },
+    { x: 540, y: 220, hair: '#3a2a1a', shirt: '#6e5c4a', state: 'meeting', phase: 4 },
+    { x: 140, y: 320, hair: '#2f1f3f', shirt: '#4f6a8c', state: 'moving', phase: 1 },
+    { x: 700, y: 320, hair: '#4a1f1f', shirt: '#8c4f4f', state: 'idle', phase: 3 },
+  ];
+
+  const t0 = Date.now();
+
+  function draw(time) {
+    const dt = time - t0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Room background
+    rect(0, 0, canvas.width, canvas.height, P.bg);
+    rect(60, 60, canvas.width - 120, canvas.height - 120, P.floor);
+
+    // Floor pattern
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 6; j++) {
+        if ((i + j) % 2 === 0) {
+          rect(80 + i * 80, 80 + j * 72, 72, 56, P.floorLight);
+        }
+      }
+    }
+
+    // Walls
+    rect(0, 0, 60, canvas.height, P.wall);
+    rect(canvas.width - 60, 0, 60, canvas.height, P.wall);
+    rect(0, 0, canvas.width, 50, P.wall);
+    rect(0, canvas.height - 50, canvas.width, 50, P.wall);
+    rect(0, 0, canvas.width, 6, P.wallTrim);
+    rect(0, canvas.height - 6, canvas.width, 6, P.wallTrim);
+
+    // Desks
+    drawDesk(260, 240);
+    drawDesk(430, 240);
+    drawDesk(610, 240);
+    drawDesk(160, 340);
+    drawDesk(780, 340, false);
+
+    // Furniture
+    drawPlant(760, 90);
+    drawPlant(140, 90);
+    rect(420, 80, 120, 70, P.fridge);
+    rect(560, 90, 30, 40, P.water);
+    rect(562, 86, 26, 6, P.waterSurface);
+    rect(860, 80, 20, 20, '#d1b87a');
+    drawClock(860, 130, time);
+
+    // Rug in meeting area
+    drawRug(480, 420);
+
+    // Agents with simulated activity
+    agents.forEach((a, idx) => {
+      const bob = Math.sin(dt * 0.004 + a.phase) * 2;
+      const offsetX = a.state === 'moving' ? Math.sin(dt * 0.003 + a.phase) * 18 : 0;
+      const stateCycle = Math.floor((dt / 4000 + idx) % 5);
+      const states = ['typing', 'reading', 'meeting', 'moving', 'idle'];
+      const state = states[stateCycle];
+      drawCharacter(a.x + offsetX, a.y, {
+        hair: a.hair,
+        shirt: a.shirt,
+        state,
+        bob,
+      });
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
