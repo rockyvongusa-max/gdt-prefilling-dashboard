@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="km">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GDT / BAITPFV — Diagrams</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Diagrams</h1>
+      <p class="sub">Architecture · Navigation · Data · Runtime</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="gallery" class="gallery"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>Prefilling · GDT Article Illustrations</small>
+    </div>
+  </footer>
+
+  <script>
+    const DIAGRAMS = [
+      { id: 'baitpfv-architecture', title: 'BAITPFV Core Architecture', category: 'architecture' },
+      { id: 'baitpfv-ss-architecture', title: 'BAITPFV — SS Architecture', category: 'architecture' },
+      { id: 'gdt-dashboard-ss-architecture', title: 'GDT Dashboard System Architecture', category: 'architecture' },
+      { id: 'prefilling-ui-architecture', title: 'Prefilling UI Architecture', category: 'architecture' },
+      { id: 'baitpfv-user-flow', title: 'BAITPFV Core User Flow', category: 'flow' },
+      { id: 'baitpfv-data-journey', title: 'Data Journey (Excalidraw)', category: 'flow' },
+      { id: 'baitpfv-navigation-ss', title: 'Navigation / Sections', category: 'navigation' },
+      { id: 'prefilling-ui-data-flow', title: 'Prefilling UI Data Flow', category: 'flow' }
+    ];
+
+    const CATEGORY_COLORS = {
+      architecture: '#a5d8ff',
+      flow: '#b2f2bb',
+      navigation: '#ffd8a8',
+      runtime: '#d0bfff'
+    };
+
+    async function loadDiagram(id) {
+      const res = await fetch(`diagrams/${id}.excalidraw`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Failed ${res.status}`);
+      return res.json();
+    }
+
+    function renderDiagram(data, canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const W = canvas.offsetWidth;
+      const H = 520;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.scale(dpr, dpr);
+
+      const scaleX = W / 900;
+      const scaleY = H / 750;
+
+      ctx.fillStyle = data?.appState?.viewBackgroundColor || '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      for (const el of (data?.elements || [])) {
+        ctx.save();
+        const x = el.x * scaleX;
+        const y = el.y * scaleY;
+        const w = (el.width || 0) * scaleX;
+        const h = (el.height || 0) * scaleY;
+
+        if (el.type === 'rectangle') {
+          ctx.fillStyle = el.backgroundColor || 'transparent';
+          ctx.strokeStyle = el.strokeColor || '#1e1e1e';
+          ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
+          const r = el.roundness?.type === 3 ? 6 * Math.min(scaleX, scaleY) : 0;
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, r);
+          ctx.fill();
+          if (el.strokeWidth > 0) ctx.stroke();
+        } else if (el.type === 'ellipse') {
+          ctx.fillStyle = el.backgroundColor || 'transparent';
+          ctx.strokeStyle = el.strokeColor || '#1e1e1e';
+          ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
+          ctx.beginPath();
+          ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+          if (el.strokeWidth > 0) ctx.stroke();
+        } else if (el.type === 'text') {
+          const fontSize = (el.fontSize || 16) * Math.min(scaleX, scaleY);
+          ctx.font = `${fontSize}px system-ui, sans-serif`;
+          ctx.fillStyle = el.strokeColor || '#1e1e1e';
+          ctx.textAlign = el.textAlign === 'center' ? 'center' : el.textAlign === 'right' ? 'right' : 'left';
+          ctx.textBaseline = 'middle';
+          const text = el.originalText || el.text || '';
+          const lines = String(text).split('\n');
+          const lh = fontSize * 1.2;
+          const tx = el.textAlign === 'center' ? x + w / 2 : el.textAlign === 'right' ? x + w : x;
+          const ty = y + h / 2 - (lines.length * lh) / 2 + lh / 2;
+          let yy = ty;
+          for (const line of lines) {
+            ctx.fillText(line, tx, yy);
+            yy += lh;
+          }
+        } else if (el.type === 'arrow') {
+          ctx.strokeStyle = el.strokeColor || '#1e1e1e';
+          ctx.lineWidth = (el.strokeWidth || 2) * Math.min(scaleX, scaleY);
+          ctx.beginPath();
+          let started = false;
+          for (const p of el.points || []) {
+            const px = (el.x + p[0]) * scaleX;
+            const py = (el.y + p[1]) * scaleY;
+            if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    async function buildGallery() {
+      const gallery = document.getElementById('gallery');
+      for (const item of DIAGRAMS) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="badge" style="background:${CATEGORY_COLORS[item.category] || '#e2e8f0'}">${item.category}</span>
+            <h2>${item.title}</h2>
+          </div>
+          <canvas id="canvas-${item.id}" class="canvas"></canvas>
+          <div class="card-actions">
+            <a class="btn" href="diagrams/${item.id}.excalidraw" target="_blank" rel="noopener">Open editable source</a>
+          </div>
+        `;
+        gallery.appendChild(card);
+        try {
+          const data = await loadDiagram(item.id);
+          requestAnimationFrame(() => renderDiagram(data, `canvas-${item.id}`));
+        } catch (e) {
+          card.querySelector('.card-header').insertAdjacentHTML('beforeend', `<p class="err">${e.message}</p>`);
+        }
+      }
+    }
+
+    buildGallery();
+  </script>
+</body>
+</html>

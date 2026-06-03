@@ -1,0 +1,30 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg", "x": 70, "y": 50, "width": 660, "height": 520, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg", "x": 400, "y": 64, "width": 420, "height": 24, "text": "Deploy / Runtime Topology", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg", "originalText": "Deploy / Runtime Topology", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "repo", "x": 340, "y": 110, "width": 220, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#d0bfff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_repo" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_repo", "x": 410, "y": 150, "width": 120, "height": 22, "text": "GitHub repo", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "repo", "originalText": "GitHub repo", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "vercel", "x": 570, "y": 270, "width": 180, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_vercel" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_vercel", "x": 630, "y": 323, "width": 120, "height": 22, "text": "Vercel", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "vercel", "originalText": "Vercel", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "host", "x": 90, "y": 270, "width": 220, "height": 120, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_host" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_host", "x": 170, "y": 330, "width": 120, "height": 22, "text": "Host runtime", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "host", "originalText": "Host runtime", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "docker", "x": 100, "y": 440, "width": 200, "height": 100, "strokeColor": "#1e1e1e", "backgroundColor": "#ffd8a8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_docker" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_docker", "x": 180, "y": 492, "width": 120, "height": 22, "text": "Docker runtime", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "docker", "originalText": "Docker runtime", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 430, "y": 200, "width": 80, "height": 70, "points": [[0, 0], [80, 70]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "repo", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "vercel", "fixedPoint": [0.5, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a2", "x": 340, "y": 220, "width": 90, "height": 50, "points": [[0, 0], [90, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "repo", "fixedPoint": [0, 0.5] }, "endBinding": { "elementId": "host", "fixedPoint": [1, 0.5] }, "updated": 0 },
+    { "type": "arrow", "id": "a3", "x": 210, "y": 390, "width": 0, "height": 50, "points": [[0, 0], [0, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "host", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "docker", "fixedPoint": [0.5, 0] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}

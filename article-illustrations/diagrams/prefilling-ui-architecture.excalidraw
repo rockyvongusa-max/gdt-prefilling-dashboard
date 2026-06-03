@@ -1,0 +1,26 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg", "x": 70, "y": 50, "width": 660, "height": 520, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg", "x": 360, "y": 64, "width": 420, "height": 24, "text": "Prefilling UI Architecture", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg", "originalText": "Prefilling UI Architecture", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "shell", "x": 130, "y": 110, "width": 240, "height": 160, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_sh", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_sh", "x": 230, "y": 182, "width": 120, "height": 22, "text": "Angular UI Shell", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "shell", "originalText": "Angular UI Shell", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "state", "x": 450, "y": 110, "width": 220, "height": 110, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_st", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_st", "x": 540, "y": 160, "width": 120, "height": 22, "text": "NgRx State", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "state", "originalText": "NgRx State", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "services", "x": 130, "y": 320, "width": 240, "height": 120, "strokeColor": "#1e1e1e", "backgroundColor": "#ffd8a8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_sv", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_sv", "x": 230, "y": 378, "width": 120, "height": 22, "text": "Feature Services", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "services", "originalText": "Feature Services", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 250, "y": 230, "width": 200, "height": 0, "points": [[0, 0], [200, 0]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "shell", "fixedPoint": [0.5, 0.5] }, "endBinding": { "elementId": "state", "fixedPoint": [0, 0.5] }, "updated": 0 },
+    { "type": "arrow", "id": "a2", "x": 250, "y": 270, "width": 0, "height": 50, "points": [[0, 0], [0, 50]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "shell", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "services", "fixedPoint": [0.5, 0] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}
