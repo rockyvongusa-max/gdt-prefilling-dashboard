@@ -1,0 +1,30 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "hermes-agent",
+  "elements": [
+    { "type": "rectangle", "id": "bg", "x": 60, "y": 50, "width": 680, "height": 520, "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bg", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bg", "x": 400, "y": 64, "width": 420, "height": 24, "text": "App Architecture Reference", "fontSize": 20, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bg", "originalText": "App Architecture Reference", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "angular", "x": 120, "y": 120, "width": 220, "height": 120, "strokeColor": "#1e1e1e", "backgroundColor": "#a5d8ff", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_angular", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_angular", "x": 210, "y": 172, "width": 120, "height": 22, "text": "Angular app", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "angular", "originalText": "Angular app", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "spring", "x": 400, "y": 120, "width": 240, "height": 120, "strokeColor": "#1e1e1e", "backgroundColor": "#b2f2bb", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_spring", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_spring", "x": 500, "y": 172, "width": 140, "height": 22, "text": "Spring Boot backend", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "spring", "originalText": "Spring Boot backend", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "config", "x": 160, "y": 300, "width": 220, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#fff3bf", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_config", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_config", "x": 250, "y": 340, "width": 120, "height": 22, "text": "Shared config", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "config", "originalText": "Shared config", "autoResize": true, "updated": 0 },
+
+    { "type": "rectangle", "id": "bridge", "x": 420, "y": 300, "width": 220, "height": 90, "strokeColor": "#1e1e1e", "backgroundColor": "#ffd8a8", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "boundElements": [{ "id": "t_bridge", "type": "text" }], "updated": 0, "link": null, "locked": false, "frameId": null, "roundness": { "type": 3 } },
+    { "type": "text", "id": "t_bridge", "x": 500, "y": 340, "width": 120, "height": 22, "text": "Data flow bridge", "fontSize": 18, "fontFamily": 1, "strokeColor": "#1e1e1e", "textAlign": "center", "verticalAlign": "middle", "containerId": "bridge", "originalText": "Data flow bridge", "autoResize": true, "updated": 0 },
+
+    { "type": "arrow", "id": "a1", "x": 230, "y": 240, "width": 90, "height": 60, "points": [[0, 0], [90, 60]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "angular", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "config", "fixedPoint": [0.3, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a2", "x": 520, "y": 240, "width": 60, "height": 60, "points": [[0, 0], [60, 60]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "spring", "fixedPoint": [0.5, 1] }, "endBinding": { "elementId": "bridge", "fixedPoint": [0.7, 0] }, "updated": 0 },
+    { "type": "arrow", "id": "a3", "x": 340, "y": 340, "width": 80, "height": 0, "points": [[0, 0], [80, 0]], "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 2, "roughness": 1, "opacity": 100, "startBinding": { "elementId": "config", "fixedPoint": [1, 0.5] }, "endBinding": { "elementId": "bridge", "fixedPoint": [0, 0.5] }, "updated": 0 }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {}
+}
