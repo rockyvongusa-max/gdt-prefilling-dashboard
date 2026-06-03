@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GDT Pre-Filling System — Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="topnav">
+    <div class="brand">GDT Pre-Filling System</div>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#modules">Modules</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#wiki">Wiki</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>GDT Pre-Filling System</h1>
+    <p class="subtitle">Small-taxpayer self-declared backend support, delivered through a modern Angular + Spring Boot stack.</p>
+    <div class="badges">
+      <span class="badge">Angular</span>
+      <span class="badge">Spring Boot</span>
+      <span class="badge">Docker</span>
+      <span class="badge">bitech</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="overview" class="section">
+      <h2>Big Picture</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">📱</div>
+          <h3>Frontend (Web)</h3>
+          <p>Angular/TypeScript application for tax office dashboards, reporting, and business detail workflows.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⚙️</div>
+          <h3>Backend (API)</h3>
+          <p>Spring Boot service exposing tax-domain APIs used by the web UI and downstream consumers.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🐳</div>
+          <h3>Deployment</h3>
+          <p>JAR built in IDE, copied to WEB-IWP, and deployed with Docker for repeatable delivery.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="modules" class="section">
+      <h2>Modules &amp; Screens</h2>
+      <div class="module-grid">
+        <div class="module">
+          <h3>Summary Dashboard</h3>
+          <p>Aggregate metrics, monthly charts, and KPI cards for tax offices.</p>
+        </div>
+        <div class="module">
+          <h3>Enterprise Registry</h3>
+          <p>Paginated list of declared enterprises with filters and detail drill-downs.</p>
+        </div>
+        <div class="module">
+          <h3>Payment Report</h3>
+          <p>Tax payment reporting by channel, status, and period.</p>
+        </div>
+        <div class="module">
+          <h3>Inventory Report</h3>
+          <p>Government inventory and liability views.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <h2>Architecture</h2>
+      <div class="architecture">
+        <div class="arch-box">
+          <h3>User</h3>
+          <p>Tax officer or admin</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="arch-box">
+          <h3>Angular Web UI</h3>
+          <p>Components, routing, state management, Khmer-enabled views</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="arch-box">
+          <h3>Spring Boot Backend</h3>
+          <p>Tax APIs, domain services, JPA persistence</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="arch-box">
+          <h3>Database / Store</h3>
+          <p>Enterprise, payment, inventory, and declaration data</p>
+        </div>
+      </div>
+      <div class="arch-notes">
+        <p>Frontend and backend are packaged and deployed independently. The web UI is served statically, while the backend provides JSON APIs consumed by the UI.</p>
+      </div>
+    </section>
+
+    <section id="deploy" class="section">
+      <h2>Deploy Runtime</h2>
+      <div class="runtime-flow">
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <h4>Build</h4>
+            <p>Build JAR in IDE with Java 21.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <h4>Transfer</h4>
+            <p>Copy JAR to WEB-IWP via SFTP/SCP.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <h4>Containerize</h4>
+            <p>Run the app inside Docker on the server.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">4</span>
+          <div class="step-content">
+            <h4>Verify</h4>
+            <p>Check running status and login flow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="checklist" class="section">
+      <h2>Deploy Checklist</h2>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" /> Java 21 active in terminal</label>
+        <label class="check-item"><input type="checkbox" /> mvn clean install succeeds</label>
+        <label class="check-item"><input type="checkbox" /> JAR copied to WEB-IWP:/home/dkweb/deploy/</label>
+        <label class="check-item"><input type="checkbox" /> Docker container started</label>
+        <label class="check-item"><input type="checkbox" /> docker ps shows container Up</label>
+        <label class="check-item"><input type="checkbox" /> http://10.255.255.6:19002/login reachable</label>
+        <label class="check-item"><input type="checkbox" /> Login with 3298 / 3298 works</label>
+      </div>
+    </section>
+
+    <section id="wiki" class="section">
+      <h2>Knowledge Hub</h2>
+      <div class="wiki-grid">
+        <div class="wiki-card">
+          <h3>Project Notes</h3>
+          <p>Package, Maven config, and domain overview.</p>
+          <a class="link" href="../10-sources/gdt-prefilling-frontend-package.json.md">Frontend source</a>
+          <a class="link" href="../10-sources/gdt-prefilling-backend-pom.xml.md">Backend source</a>
+        </div>
+        <div class="wiki-card">
+          <h3>Deploy Runbook</h3>
+          <p>Exact server targets, credentials, and verification steps.</p>
+          <a class="link" href="../40-projects/webui-dev-deploy-runbook.md">Open runbook</a>
+        </div>
+        <div class="wiki-card">
+          <h3>Guides</h3>
+          <p>Step-by-step guides for SSH, Docker, and why we build JARs.</p>
+          <a class="link" href="../20-notes/ssh-and-docker-for-web-iwp.md">SSH + Docker guide</a>
+          <a class="link" href="../20-notes/why-build-jar.md">Why build a JAR?</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>GDT Pre-Filling System knowledge base • Built for AI-assisted development</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
