@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDT Pre-Filling System — Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+    svg { width: 100%; min-width: 900px; display: block; }
+    .nav-back { color: #38bdf8; text-decoration: none; font-size: 0.875rem; margin-bottom: 1rem; display: inline-block; }
+    .nav-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="nav-back" href="../index.html">← Back to Dashboard</a>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>GDT Pre-Filling System — System Architecture</h1>
+      </div>
+      <p class="subtitle">High-level flow: User → Angular Web UI → Spring Boot Backend → Docker on WEB-IWP</p>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1000 520">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- User / Browser -->
+        <rect x="40" y="200" width="120" height="60" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="100" y="228" fill="white" font-size="11" font-weight="600" text-anchor="middle">Tax Officer / Admin</text>
+        <text x="100" y="244" fill="#94a3b8" font-size="9" text-anchor="middle">Browser</text>
+
+        <!-- Angular Frontend -->
+        <rect x="240" y="180" width="180" height="80" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="330" y="208" fill="white" font-size="12" font-weight="600" text-anchor="middle">Angular Web UI</text>
+        <text x="330" y="226" fill="#94a3b8" font-size="9" text-anchor="middle">TypeScript + Angular</text>
+        <text x="330" y="242" fill="#94a3b8" font-size="9" text-anchor="middle">Reports / Registry / Tax flows</text>
+
+        <!-- Spring Boot Backend -->
+        <rect x="520" y="180" width="180" height="80" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="610" y="208" fill="white" font-size="12" font-weight="600" text-anchor="middle">Spring Boot Backend</text>
+        <text x="610" y="226" fill="#94a3b8" font-size="9" text-anchor="middle">REST APIs + domain services</text>
+        <text x="610" y="242" fill="#94a3b8" font-size="9" text-anchor="middle">JPA / persistence layer</text>
+
+        <!-- Docker runtime box -->
+        <rect x="760" y="160" width="180" height="120" rx="10" fill="rgba(120, 53, 15, 0.15)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="770" y="178" fill="#fbbf24" font-size="10" font-weight="600">Runtime: WEB-IWP</text>
+
+        <!-- Docker container -->
+        <rect x="780" y="190" width="140" height="70" rx="6" fill="rgba(120, 53, 15, 0.35)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="850" y="214" fill="white" font-size="11" font-weight="600" text-anchor="middle">Docker container</text>
+        <text x="850" y="230" fill="#94a3b8" font-size="9" text-anchor="middle">openjdk:21-jdk</text>
+        <text x="850" y="246" fill="#94a3b8" font-size="9" text-anchor="middle">java -jar app.jar</text>
+
+        <!-- Test URL box -->
+        <rect x="240" y="340" width="180" height="50" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="330" y="368" fill="white" font-size="11" font-weight="600" text-anchor="middle">Verification URL</text>
+        <text x="330" y="384" fill="#22d3ee" font-size="9" text-anchor="middle">10.255.255.6:19002/login</text>
+
+        <!-- Arrows -->
+        <line x1="160" y1="230" x2="238" y2="230" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="200" y="224" fill="#94a3b8" font-size="9" text-anchor="middle">HTTPS</text>
+
+        <line x1="420" y1="220" x2="518" y2="220" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="470" y="214" fill="#94a3b8" font-size="9" text-anchor="middle">JSON / REST</text>
+
+        <line x1="700" y1="220" x2="758" y2="220" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="730" y="214" fill="#94a3b8" font-size="9" text-anchor="middle">port 8080</text>
+
+        <line x1="850" y1="260" x2="850" y2="338" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="870" y="302" fill="#94a3b8" font-size="9">reachability</text>
+
+        <line x1="330" y1="260" x2="330" y2="338" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="350" y="302" fill="#94a3b8" font-size="9">browser verify</text>
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>Frontend</h3>
+        </div>
+        <ul>
+          <li>Angular + TypeScript app</li>
+          <li>Tax office dashboards and reporting UI</li>
+          <li>Deployed separately from backend</li>
+          <li>Talks to backend via REST</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>Backend</h3>
+        </div>
+        <ul>
+          <li>Spring Boot 3.4.8</li>
+          <li>Runs on Java 21</li>
+          <li>Packaged as executable JAR</li>
+          <li>Serves JSON APIs to the UI</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Deployment</h3>
+        </div>
+        <ul>
+          <li>Build JAR in IntelliJ IDEA</li>
+          <li>Copy JAR to WEB-IWP via SFTP</li>
+          <li>Run in Docker on port 8080</li>
+          <li>Verify at 10.255.255.6:19002</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
