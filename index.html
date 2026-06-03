@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GDT Pre-Filling System — Dashboard</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GDT Pre-Filling System — Dashboard</title>
+  <link rel="stylesheet" href="style-dashboard.css" />
 </head>
 <body>
   <nav class="topnav">
@@ -12,7 +12,7 @@
     <div class="nav-links">
       <a href="#overview">Overview</a>
       <a href="#modules">Modules</a>
-      <a href="#architecture">Architecture</a>
+      <a href="#diagrams">Diagrams</a>
       <a href="#deploy">Deploy</a>
       <a href="#checklist">Checklist</a>
       <a href="#wiki">Wiki</a>
@@ -21,12 +21,12 @@
 
   <header class="hero">
     <h1>GDT Pre-Filling System</h1>
-    <p class="subtitle">Small-taxpayer self-declared backend support, delivered through a modern Angular + Spring Boot stack.</p>
+    <p class="subtitle">A calm, clear view of the small-taxpayer self-declared stack: Angular frontend, Spring Boot backend, and Docker delivery.</p>
     <div class="badges">
-      <span class="badge">Angular</span>
+      <span class="badge">Angular + TypeScript</span>
       <span class="badge">Spring Boot</span>
       <span class="badge">Docker</span>
-      <span class="badge">bitech</span>
+      <span class="badge">Tax Domain</span>
     </div>
   </header>
 
@@ -36,19 +36,19 @@
       <h2>Big Picture</h2>
       <div class="cards">
         <div class="card">
-          <div class="icon">📱</div>
-          <h3>Frontend (Web)</h3>
-          <p>Angular/TypeScript application for tax office dashboards, reporting, and business detail workflows.</p>
+          <div class="icon">🌐</div>
+          <h3>Web UI</h3>
+          <p>Angular/TypeScript app for tax office workflows, reports, and dashboards with Khmer support.</p>
         </div>
         <div class="card">
           <div class="icon">⚙️</div>
-          <h3>Backend (API)</h3>
-          <p>Spring Boot service exposing tax-domain APIs used by the web UI and downstream consumers.</p>
+          <h3>Backend</h3>
+          <p>Spring Boot APIs powering summaries, enterprise lists, payments, and inventory data.</p>
         </div>
         <div class="card">
           <div class="icon">🐳</div>
-          <h3>Deployment</h3>
-          <p>JAR built in IDE, copied to WEB-IWP, and deployed with Docker for repeatable delivery.</p>
+          <h3>Delivery</h3>
+          <p>JAR built in IDE, copied to WEB-IWP, deployed with Docker, verified in browser.</p>
         </div>
       </div>
     </section>
@@ -58,81 +58,63 @@
       <div class="module-grid">
         <div class="module">
           <h3>Summary Dashboard</h3>
-          <p>Aggregate metrics, monthly charts, and KPI cards for tax offices.</p>
+          <p>KPI cards and charts for declared enterprises, tax paid, and inventory balance.</p>
         </div>
         <div class="module">
           <h3>Enterprise Registry</h3>
-          <p>Paginated list of declared enterprises with filters and detail drill-downs.</p>
+          <p>Paginated enterprise list with branch filters, dates, status, and detail drill-down.</p>
         </div>
         <div class="module">
-          <h3>Payment Report</h3>
-          <p>Tax payment reporting by channel, status, and period.</p>
+          <h3>Payment &amp; Liability</h3>
+          <p>Payment channels, paid vs unpaid counts, and government inventory views.</p>
         </div>
         <div class="module">
-          <h3>Inventory Report</h3>
-          <p>Government inventory and liability views.</p>
+          <h3>Exports</h3>
+          <p>Excel download for branch summaries and report tables.</p>
         </div>
       </div>
     </section>
 
-    <section id="architecture" class="section">
-      <h2>Architecture</h2>
-      <div class="architecture">
-        <div class="arch-box">
-          <h3>User</h3>
-          <p>Tax officer or admin</p>
-        </div>
-        <div class="arrow">→</div>
-        <div class="arch-box">
-          <h3>Angular Web UI</h3>
-          <p>Components, routing, state management, Khmer-enabled views</p>
-        </div>
-        <div class="arrow">→</div>
-        <div class="arch-box">
-          <h3>Spring Boot Backend</h3>
-          <p>Tax APIs, domain services, JPA persistence</p>
-        </div>
-        <div class="arrow">→</div>
-        <div class="arch-box">
-          <h3>Database / Store</h3>
-          <p>Enterprise, payment, inventory, and declaration data</p>
-        </div>
-      </div>
-      <div class="arch-notes">
-        <p>Frontend and backend are packaged and deployed independently. The web UI is served statically, while the backend provides JSON APIs consumed by the UI.</p>
+    <section id="diagrams" class="section">
+      <h2>Diagrams</h2>
+      <p style="color:#6b6b6b;margin-top:0;">Separate focused views of the system and deployment flow.</p>
+      <div class="diagram-grid">
+        <a class="diagram-card" href="diagrams/system-architecture.html">
+          <h3>System Architecture</h3>
+          <p>User → Angular → Spring Boot → data stores.</p>
+          <span class="tag">Architecture</span>
+        </a>
+        <a class="diagram-card" href="diagrams/deploy-flow.html">
+          <h3>Deploy Flow</h3>
+          <p>IDE build, transfer, Docker runtime, browser verification.</p>
+          <span class="tag">Deployment</span>
+        </a>
+        <a class="diagram-card" href="diagrams/ba-itpfv-architecture-flow.html">
+          <h3>BAITPFV Architecture Flow</h3>
+          <p>Screens, APIs, tax-domain data, and localization.</p>
+          <span class="tag">Domain</span>
+        </a>
       </div>
     </section>
 
     <section id="deploy" class="section">
       <h2>Deploy Runtime</h2>
-      <div class="runtime-flow">
-        <div class="step">
-          <span class="step-num">1</span>
-          <div class="step-content">
-            <h4>Build</h4>
-            <p>Build JAR in IDE with Java 21.</p>
-          </div>
+      <div class="cards">
+        <div class="card">
+          <h3>1. Build</h3>
+          <p>Build JAR in IntelliJ with Java 21 and Maven.</p>
         </div>
-        <div class="step">
-          <span class="step-num">2</span>
-          <div class="step-content">
-            <h4>Transfer</h4>
-            <p>Copy JAR to WEB-IWP via SFTP/SCP.</p>
-          </div>
+        <div class="card">
+          <h3>2. Transfer</h3>
+          <p>Copy the JAR to WEB-IWP with SFTP or SCP.</p>
         </div>
-        <div class="step">
-          <span class="step-num">3</span>
-          <div class="step-content">
-            <h4>Containerize</h4>
-            <p>Run the app inside Docker on the server.</p>
-          </div>
+        <div class="card">
+          <h3>3. Containerize</h3>
+          <p>Run the app inside Docker on the server.</p>
         </div>
-        <div class="step">
-          <span class="step-num">4</span>
-          <div class="step-content">
-            <h4>Verify</h4>
-            <p>Check running status and login flow.</p>
-          </div>
+        <div class="card">
+          <h3>4. Verify</h3>
+          <p>Open the verification URL and confirm the app loads.</p>
         </div>
       </div>
     </section>
@@ -155,20 +137,24 @@
       <div class="wiki-grid">
         <div class="wiki-card">
           <h3>Project Notes</h3>
-          <p>Package, Maven config, and domain overview.</p>
+          <p>Package, Maven config, server access, and runbooks.</p>
           <a class="link" href="../10-sources/gdt-prefilling-frontend-package.json.md">Frontend source</a>
           <a class="link" href="../10-sources/gdt-prefilling-backend-pom.xml.md">Backend source</a>
-        </div>
-        <div class="wiki-card">
-          <h3>Deploy Runbook</h3>
-          <p>Exact server targets, credentials, and verification steps.</p>
-          <a class="link" href="../40-projects/webui-dev-deploy-runbook.md">Open runbook</a>
+          <a class="link" href="../10-sources/web-ui-dev-server-access.md">Server access</a>
         </div>
         <div class="wiki-card">
           <h3>Guides</h3>
-          <p>Step-by-step guides for SSH, Docker, and why we build JARs.</p>
+          <p>Step-by-step help for SSH, Docker, and Java setup.</p>
           <a class="link" href="../20-notes/ssh-and-docker-for-web-iwp.md">SSH + Docker guide</a>
           <a class="link" href="../20-notes/why-build-jar.md">Why build a JAR?</a>
+          <a class="link" href="../20-notes/set-java-21-in-terminal.md">Set Java 21 in terminal</a>
+        </div>
+        <div class="wiki-card">
+          <h3>Design Notes</h3>
+          <p>Architecture flows from the BAITPFV analysis and UI mapping.</p>
+          <a class="link" href="../20-notes/ba-itpfv-architecture-flow.md">BAITPFV architecture flow</a>
+          <a class="link" href="../40-projects/webui-dev-deploy-runbook.md">Deploy runbook</a>
+          <a class="link" href="../40-projects/gdt-prefilling-system.md">Project overview</a>
         </div>
       </div>
     </section>
@@ -178,7 +164,5 @@
   <footer class="footer">
     <p>GDT Pre-Filling System knowledge base • Built for AI-assisted development</p>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>
